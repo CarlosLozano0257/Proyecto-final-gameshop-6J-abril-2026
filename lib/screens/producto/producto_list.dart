@@ -90,7 +90,64 @@ class ProductoList extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.redAccent),
-                        onPressed: () => provider.eliminar(p.id!),
+                        onPressed: () {
+                          // CUADRO DE CONFIRMACIÓN AGREGADO AQUÍ
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: const Color(0xFF1A1A2E),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  side: const BorderSide(
+                                    color: Colors.redAccent,
+                                    width: 1,
+                                  ),
+                                ),
+                                title: const Text(
+                                  "Confirmar",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: Text(
+                                  "¿Deseas eliminar '${p.nombre}' del catálogo?",
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text(
+                                      "Cancelar",
+                                      style: TextStyle(color: Colors.white70),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                    onPressed: () {
+                                      provider.eliminar(p.id!);
+                                      Navigator.of(context).pop();
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            "${p.nombre} eliminado",
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Eliminar",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
